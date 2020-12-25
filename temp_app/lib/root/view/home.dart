@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:school_tem_app/Root/View/ManageView/manage_home.dart';
-import 'package:school_tem_app/Root/View/TempCheck/qr_scanner.dart';
-import 'package:school_tem_app/Root/View/TempCheck/QRSection/HomeQR.dart';
+import 'package:temp_app/root/view/bluetooth_connection/scan_page.dart';
+import 'package:temp_app/root/view/bluetooth_connection/temp_device.dart';
+import 'package:temp_app/root/view/history/history_home.dart';
+import 'package:temp_app/root/view/management/manage_home.dart';
+import 'package:temp_app/root/view/bluetooth_connection//qrcode/qr_code_home.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -50,7 +51,10 @@ class HomePage extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),
-                onPressed: () => {},
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => HistoryHome())),
                 color: Colors.greenAccent,
                 child: Text("Sejarah Kemasukan"),
               ),
@@ -66,8 +70,7 @@ class HomePage extends StatelessWidget {
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => QRHome()
-                  ),
+                      builder: (BuildContext context) => TempDevice()),
                 ),
                 color: Colors.greenAccent,
                 child: Text("Fungsi Pemeriksaan Suhu"),

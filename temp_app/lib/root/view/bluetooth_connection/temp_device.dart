@@ -4,7 +4,7 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 import './discovery_page.dart';
 import './select_bonded_device_page.dart';
-import './chat_page.dart';
+import './scan_page.dart';
 
 
 class TempDevice extends StatefulWidget {
@@ -259,7 +259,7 @@ class _TempDevice extends State<TempDevice> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) {
-          return ChatPage(server: server);
+          return ScanPage(server: server);
         },
       ),
     );

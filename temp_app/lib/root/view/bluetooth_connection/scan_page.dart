@@ -1,17 +1,15 @@
-import 'dart:async';
-import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:school_tem_app/Root/View/TempCheck/QRScanner.dart';
+import 'package:temp_app/root/view/bluetooth_connection/qrcode/qr_code_home.dart';
 
-class ChatPage extends StatefulWidget {
+class ScanPage extends StatefulWidget {
   final BluetoothDevice server;
 
-  const ChatPage({this.server});
+  const ScanPage({this.server});
 
   @override
-  _ChatPage createState() => new _ChatPage();
+  _ScanPage createState() => new _ScanPage();
 }
 
 class _Message {
@@ -21,7 +19,7 @@ class _Message {
   _Message(this.whom, this.text);
 }
 
-class _ChatPage extends State<ChatPage> {
+class _ScanPage extends State<ScanPage> {
   static final clientID = 0;
   BluetoothConnection connection;
 
@@ -79,42 +77,34 @@ class _ChatPage extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Row> list = messages.map((_message) {
-      return Row(
-        children: <Widget>[
-          Container(
-            child: Text(
-                (text) {
-                  return text == '/shrug' ? '¯\\_(ツ)_/¯' : text;
-                }(_message.text.trim()),
-                style: TextStyle(color: Colors.white)),
-            padding: EdgeInsets.all(12.0),
-            margin: EdgeInsets.only(bottom: 8.0, left: 8.0, right: 8.0),
-            width: 222.0,
-            decoration: BoxDecoration(
-                color:
-                    _message.whom == clientID ? Colors.blueAccent : Colors.grey,
-                borderRadius: BorderRadius.circular(7.0)),
-          ),
-        ],
-        mainAxisAlignment: _message.whom == clientID
-            ? MainAxisAlignment.end
-            : MainAxisAlignment.start,
-      );
-    }).toList();
-
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-          title: (isConnecting
-              ? Text('Menghubungkan Applikasi dan ' + widget.server.name + '...')
-              : isConnected
-                  ? Text('Menunggu suhu daripada ' + widget.server.name)
-                  : Text('Hubungan  ' + widget.server.name +' terputus'))),
+        title: (isConnecting
+            ? Text('Menghubungkan Applikasi dan ' + widget.server.name + '...')
+            : isConnected
+                ? Text('Menunggu suhu daripada ' + widget.server.name)
+                : Text('Hubungan  ' + widget.server.name + ' terputus')),
+        centerTitle: true,
+      ),
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-
-          ],
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Container(
+                width: width,
+                height: 0.5 * height,
+                child: Image.asset("Assets/Image/temperature.png"),
+              ),
+              SizedBox(height: height * 0.01),
+              Text("menunggu bacaan suhu....")
+            ],
+          ),
         ),
       ),
     );
@@ -130,7 +120,6 @@ class _ChatPage extends State<ChatPage> {
     });
     Uint8List buffer = Uint8List(data.length - backspacesCounter);
     int bufferIndex = buffer.length;
-
     // Apply backspace control character
     backspacesCounter = 0;
     for (int i = data.length - 1; i >= 0; i--) {
@@ -144,32 +133,8 @@ class _ChatPage extends State<ChatPage> {
         }
       }
     }
-
-    // Create message if there is new line character
     String dataString = String.fromCharCodes(buffer);
-    int index = buffer.indexOf(13);
-    if (~index != 0) {
-/*
-      Navigator.push(context, MaterialPageRoute(builder: (context) => QRScanner()));
-*/
-      /*setState(() {
-        messages.add(
-          _Message(
-            1,
-            backspacesCounter > 0
-                ? _messageBuffer.substring(
-                    0, _messageBuffer.length - backspacesCounter)
-                : _messageBuffer + dataString.substring(0, index),
-          ),
-        );
-        _messageBuffer = dataString.substring(index);
-      });*/
-    }
-    else {
-      _messageBuffer = (backspacesCounter > 0
-          ? _messageBuffer.substring(
-              0, _messageBuffer.length - backspacesCounter)
-          : _messageBuffer + dataString);
-    }
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => QrCodeHome(dataString)));
   }
 }
