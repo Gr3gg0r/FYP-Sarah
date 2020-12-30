@@ -59,11 +59,14 @@ class HistoryProfile extends StatelessWidget {
         stream: _firestore
             .collection("ClockInHistory")
             .where("userId", isEqualTo: uid)
+            .orderBy("date",descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return LoadingScreen();
           }
+          if(snapshot.data==null)
+            return LoadingScreen();
           return ListView(
             children: snapshot.data.docs.map((DocumentSnapshot snapshot) {
               var date = new DateTime.fromMicrosecondsSinceEpoch(
@@ -73,7 +76,8 @@ class HistoryProfile extends StatelessWidget {
               return Card(
                 child: ListTile(
                   title: Text("$dateFormat"),
-                  trailing: Text("$time"),
+                  trailing: Text("${snapshot.data()['temp']} °C"),
+                  subtitle:Text("$time"),
                   onLongPress: () =>_showMyDialog(context,snapshot),
                 ),
               );

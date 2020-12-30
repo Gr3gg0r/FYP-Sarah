@@ -35,6 +35,9 @@ class ListHistory extends StatelessWidget {
           }
           return ListView(
             children: snapshot.data.docs.map((DocumentSnapshot snapshot) {
+              _firestore.collection("ClockInHistory").doc(snapshot.id).update({
+                "temp": snapshot.data()['temp  ']??snapshot.data()['temp']
+              });
               var date = new DateTime.fromMicrosecondsSinceEpoch(
                   snapshot.data()["date"].microsecondsSinceEpoch);
               String time = DateFormat().add_jm().format(date);
@@ -70,7 +73,7 @@ class _UserCard extends StatelessWidget {
             backgroundImage: NetworkImage(snap.data.data()["photoUrl"]),
           ),
           title: Text("${snap.data.data()["name"] ?? ""}"),
-          subtitle: Text("Kelas : ${snap.data.data()["class"]}"),
+          subtitle: Text("Suhu: ${snapshot.data()["temp"]}"),
           trailing: Text("$date \n$time",textAlign: TextAlign.center,),
           onTap: () => Navigator.push(
               context,

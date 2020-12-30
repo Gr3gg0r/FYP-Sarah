@@ -66,7 +66,7 @@ class _UserCard extends StatelessWidget {
             backgroundImage: NetworkImage(snap.data.data()["photoUrl"]),
           ),
           title: Text("${snap.data.data()["name"] ?? ""}"),
-          subtitle: Text("Kelas : ${snap.data.data()["class"]}"),
+          subtitle: Text("Suhu: ${snapshot.data()["temp"]}"),
           trailing: Text("$time"),
           onTap: ()=>Navigator.push(context, MaterialPageRoute(
             builder: (BuildContext context) => ProfileView(snapshot: snap.data,)

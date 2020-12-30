@@ -28,7 +28,7 @@ class _QrCodeHomeState extends State<QrCodeHome> {
       var docID = _firestore.collection("ClockInHistory").doc().id;
       _firestore.collection("ClockInHistory").doc(docID).set({
         'userId': result,
-        'temp  ': widget.temp,
+        'temp': widget.temp,
         'date': DateTime.now(),
       }).then((value) {
         setState(() {
