@@ -70,7 +70,7 @@ class HomePage extends StatelessWidget {
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => QrCodeHome("36.1")),
+                      builder: (BuildContext context) => TempDevice()),
                 ),
                 color: Colors.greenAccent,
                 child: Text("Fungsi Pemeriksaan Suhu"),
